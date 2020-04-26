@@ -1,0 +1,18 @@
+Description:
+------------
+
+This helper project provides realtime local database services similar to firebase.
+
+Components:
+-----------
+1. MongoDB replica set implemented using mongo docker 
+2. NodeJS server using socketIO (for realtime capabilities), express(for CRUD operations), mongoose implemented using Node docker
+
+
+
+Arch:
+-----
+
+
+
+
