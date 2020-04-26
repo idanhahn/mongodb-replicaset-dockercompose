@@ -1,6 +1,9 @@
-/-------------------/
-/- mongoDB(Docker) -/
-/-------------------/
+starting application in development:
+docker-compose up
+
+node docker with webstorm:
+https://blog.jetbrains.com/webstorm/2017/04/quick-tour-of-webstorm-and-docker/
+
 
 
 
