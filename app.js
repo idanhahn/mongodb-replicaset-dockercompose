@@ -9,9 +9,15 @@ var usersRouter = require('./routes/users');
 
 var cors = require('cors')
 
-var mongoose = require('mongoose')
+
+
+var mongoose = require('mongoose');
 
 var app = express();
+
+var server = require('http').createServer(app);
+
+var io = require('socket.io')(server);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -44,5 +50,10 @@ app.use(function(err, req, res, next) {
 });
 
 mongoose.connect('mongodb://mongo:27017/test').then(() => console.log('Connection to realtime-db successful')).catch((err) => console.log(err))
+
+io.on('connection', (socket)=>{
+  console.log('user connected')
+})
+app.io = io
 
 module.exports = app;

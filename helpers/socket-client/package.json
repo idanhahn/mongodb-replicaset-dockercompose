@@ -1,0 +1,11 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node client"
+  },
+  "dependencies": {
+    "socket.io-client": "^2.3.0"
+  }
+}
