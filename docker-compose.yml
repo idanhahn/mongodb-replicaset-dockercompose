@@ -1,4 +1,4 @@
-version: '3'
+version: '3.2'
 services:
   app:
     container_name: realtime_db_app
@@ -12,6 +12,13 @@ services:
       - "3000:3000"
     depends_on:
       - mongodb-primary
+    environment:
+      - MONGODB_HOSTNAME=mongodb-primary
+      - MONGODB_USERNAME=root
+      - MONGODB_PASSWORD=password123
+      - MONGODB_PORT=27017
+      - MONGODB_DB_NAME=realtime
+
   mongodb-primary:
     image: 'bitnami/mongodb:latest'
     environment:

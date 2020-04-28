@@ -10,9 +10,9 @@ var usersRouter = require('./routes/users');
 var cors = require('cors')
 
 
-
 var mongoose = require('mongoose');
 
+var cfg = require('./cfg');
 var app = express();
 
 var server = require('http').createServer(app);
@@ -49,16 +49,24 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-mongoose.connect('mongodb://mongodb-primary:27017/realtime',{
+let uri = 'mongodb://'+ cfg.mongodb.hostname + ':' + cfg.mongodb.port + '/' + cfg.mongodb.db_name;
+console.log(uri)
+mongoose.connect(uri,{
   "auth": { "authSource": "admin"},
-  "user": "root",
-  "pass": "password123",
+  "user": cfg.mongodb.username,
+  "pass": cfg.mongodb.password,
   "useMongoClient": true
 }).then(() => console.log('Connection to realtime-db successful')).catch((err) => console.log(err))
 
-io.on('connection', (socket)=>{
-  console.log('user connected')
+io.on('connection', function (socket) {
+  socket.on('newdata', function (data){
+    io.emit('new-data', {data: data});
+  });
+  socket.on('updatedata', function (data){
+    io.emit('update-data', {data: data});
+  });
 })
 app.io = io
+
 
 module.exports = app;
