@@ -49,7 +49,12 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-mongoose.connect('mongodb://mongo:27017/test').then(() => console.log('Connection to realtime-db successful')).catch((err) => console.log(err))
+mongoose.connect('mongodb://mongodb-primary:27017/realtime',{
+  "auth": { "authSource": "admin"},
+  "user": "root",
+  "pass": "password123",
+  "useMongoClient": true
+}).then(() => console.log('Connection to realtime-db successful')).catch((err) => console.log(err))
 
 io.on('connection', (socket)=>{
   console.log('user connected')
