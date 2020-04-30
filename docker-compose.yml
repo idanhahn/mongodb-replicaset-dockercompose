@@ -1,7 +1,7 @@
 version: '3.2'
 services:
   app:
-    container_name: realtime_db_app
+    container_name: replica_db_app
     restart: on-failure
     build: .
     volumes:
@@ -17,7 +17,7 @@ services:
       - MONGODB_USERNAME=root
       - MONGODB_PASSWORD=password123
       - MONGODB_PORT=27017
-      - MONGODB_DB_NAME=realtime
+      - MONGODB_DB_NAME=replica_db
 
   mongodb-primary:
     image: 'bitnami/mongodb:latest'
@@ -45,6 +45,10 @@ services:
       - MONGODB_PRIMARY_PORT_NUMBER=27017
       - MONGODB_PRIMARY_ROOT_PASSWORD=password123
       - MONGODB_REPLICA_SET_KEY=replicasetkey123
+    expose:
+      - 27018
+    ports:
+      - "27018:27017"
 
   mongodb-arbiter:
     image: 'bitnami/mongodb:latest'

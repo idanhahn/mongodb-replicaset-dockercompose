@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var chatsRouter = require('./routes/chats');
 
 var cors = require('cors')
 
@@ -32,6 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/api/chats', chatsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -49,24 +51,15 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-let uri = 'mongodb://'+ cfg.mongodb.hostname + ':' + cfg.mongodb.port + '/' + cfg.mongodb.db_name;
+let uri = 'mongodb://'+ cfg.mongodb.hostname + ':' + cfg.mongodb.port
+            + ',mongodb-secondary:27018' + '/' + cfg.mongodb.db_name + '?replicaSet=replicaset';
+
 console.log(uri)
 mongoose.connect(uri,{
   "auth": { "authSource": "admin"},
   "user": cfg.mongodb.username,
   "pass": cfg.mongodb.password,
-  "useMongoClient": true
-}).then(() => console.log('Connection to realtime-db successful')).catch((err) => console.log(err))
-
-io.on('connection', function (socket) {
-  socket.on('newdata', function (data){
-    io.emit('new-data', {data: data});
-  });
-  socket.on('updatedata', function (data){
-    io.emit('update-data', {data: data});
-  });
-})
-app.io = io
-
+  "useNewUrlParser": true
+}).then(() => console.log('Connection to db successful')).catch((err) => console.log(err))
 
 module.exports = app;
